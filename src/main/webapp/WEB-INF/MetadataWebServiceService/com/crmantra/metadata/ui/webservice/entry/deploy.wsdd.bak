@@ -1,0 +1,112 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from MetadataWebServiceService WSDL service -->
+
+  <service name="MetadataWebService" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://entry.webservice.ui.metadata.crmantra.com"/>
+      <parameter name="wsdlServiceElement" value="MetadataWebServiceService"/>
+      <parameter name="schemaQualified" value="http://beans.webservice.ui.metadata.crmantra.com,http://entry.webservice.ui.metadata.crmantra.com"/>
+      <parameter name="wsdlServicePort" value="MetadataWebService"/>
+      <parameter name="className" value="com.crmantra.metadata.ui.webservice.entry.MetadataWebServiceSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="MetadataWebService"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="readMetadata" qname="operNS:readMetadata" xmlns:operNS="http://entry.webservice.ui.metadata.crmantra.com" returnQName="retNS:readMetadataReturn" xmlns:retNS="http://entry.webservice.ui.metadata.crmantra.com" returnType="rtns:MetadataServiceOutputBean" xmlns:rtns="http://beans.webservice.ui.metadata.crmantra.com" soapAction="" >
+        <parameter qname="pns:input" xmlns:pns="http://entry.webservice.ui.metadata.crmantra.com" type="tns:MetadataServiceInputBean" xmlns:tns="http://beans.webservice.ui.metadata.crmantra.com"/>
+      </operation>
+      <parameter name="allowedMethods" value="readMetadata"/>
+
+      <arrayMapping
+        xmlns:ns="http://entry.webservice.ui.metadata.crmantra.com"
+        qname="ns:ArrayOf_tns1_SForceOutputBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.SForceOutputBean[]"
+        innerType="cmp-ns:SForceOutputBean" xmlns:cmp-ns="http://beans.webservice.ui.metadata.crmantra.com"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://entry.webservice.ui.metadata.crmantra.com"
+        qname="ns:ArrayOf_tns1_SForceObjectBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.SForceObjectBean[]"
+        innerType="cmp-ns:SForceObjectBean" xmlns:cmp-ns="http://beans.webservice.ui.metadata.crmantra.com"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://entry.webservice.ui.metadata.crmantra.com"
+        qname="ns:ArrayOf_tns1_SForceErrorBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.SForceErrorBean[]"
+        innerType="cmp-ns:SForceErrorBean" xmlns:cmp-ns="http://beans.webservice.ui.metadata.crmantra.com"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://beans.webservice.ui.metadata.crmantra.com"
+        qname="ns:MetadataServiceInputBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.MetadataServiceInputBean"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://entry.webservice.ui.metadata.crmantra.com"
+        qname="ns:ArrayOf_xsd_string"
+        type="java:java.lang.String[]"
+        innerType="cmp-ns:string" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema"
+        encodingStyle=""
+      />
+      <arrayMapping
+        xmlns:ns="http://entry.webservice.ui.metadata.crmantra.com"
+        qname="ns:ArrayOf_tns1_UserdataBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.UserdataBean[]"
+        innerType="cmp-ns:UserdataBean" xmlns:cmp-ns="http://beans.webservice.ui.metadata.crmantra.com"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://beans.webservice.ui.metadata.crmantra.com"
+        qname="ns:SForceErrorBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.SForceErrorBean"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://beans.webservice.ui.metadata.crmantra.com"
+        qname="ns:SForceOutputBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.SForceOutputBean"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://beans.webservice.ui.metadata.crmantra.com"
+        qname="ns:MetadataServiceOutputBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.MetadataServiceOutputBean"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://beans.webservice.ui.metadata.crmantra.com"
+        qname="ns:UserdataBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.UserdataBean"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://beans.webservice.ui.metadata.crmantra.com"
+        qname="ns:SForceObjectBean"
+        type="java:com.crmantra.metadata.ui.webservice.beans.SForceObjectBean"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>

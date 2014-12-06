@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://entry.webservice.ui.metadata.crmantra.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://entry.webservice.ui.metadata.crmantra.com" xmlns:intf="http://entry.webservice.ui.metadata.crmantra.com" xmlns:tns1="http://beans.webservice.ui.metadata.crmantra.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://entry.webservice.ui.metadata.crmantra.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://beans.webservice.ui.metadata.crmantra.com"/>
+   <element name="readMetadata">
+    <complexType>
+     <sequence>
+      <element name="input" type="tns1:MetadataServiceInputBean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_xsd_string">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_tns1_UserdataBean">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:UserdataBean"/>
+    </sequence>
+   </complexType>
+   <element name="readMetadataResponse">
+    <complexType>
+     <sequence>
+      <element name="readMetadataReturn" type="tns1:MetadataServiceOutputBean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_tns1_SForceErrorBean">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:SForceErrorBean"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_tns1_SForceObjectBean">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:SForceObjectBean"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_tns1_SForceOutputBean">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:SForceOutputBean"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema elementFormDefault="qualified" targetNamespace="http://beans.webservice.ui.metadata.crmantra.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://entry.webservice.ui.metadata.crmantra.com"/>
+   <complexType name="UserdataBean">
+    <sequence>
+     <element name="objects" nillable="true" type="impl:ArrayOf_xsd_string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="MetadataServiceInputBean">
+    <sequence>
+     <element name="showAllDescription" type="xsd:boolean"/>
+     <element name="users" nillable="true" type="impl:ArrayOf_tns1_UserdataBean"/>
+    </sequence>
+   </complexType>
+   <complexType name="SForceErrorBean">
+    <sequence>
+     <element name="message" nillable="true" type="xsd:string"/>
+     <element name="number" nillable="true" type="xsd:string"/>
+     <element name="suberrors" nillable="true" type="impl:ArrayOf_tns1_SForceErrorBean"/>
+     <element name="type" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="SForceObjectBean">
+    <sequence>
+     <element name="activateable" nillable="true" type="xsd:string"/>
+     <element name="createable" nillable="true" type="xsd:string"/>
+     <element name="custom" nillable="true" type="xsd:string"/>
+     <element name="customSetting" nillable="true" type="xsd:string"/>
+     <element name="deletable" nillable="true" type="xsd:string"/>
+     <element name="deprecatedAndHidden" nillable="true" type="xsd:string"/>
+     <element name="feedEnabled" nillable="true" type="xsd:string"/>
+     <element name="label" nillable="true" type="xsd:string"/>
+     <element name="labelPlural" nillable="true" type="xsd:string"/>
+     <element name="layoutable" nillable="true" type="xsd:string"/>
+     <element name="mergeable" nillable="true" type="xsd:string"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="queryable" nillable="true" type="xsd:string"/>
+     <element name="replicateable" nillable="true" type="xsd:string"/>
+     <element name="retrieveable" nillable="true" type="xsd:string"/>
+     <element name="searchable" nillable="true" type="xsd:string"/>
+     <element name="triggerable" nillable="true" type="xsd:string"/>
+     <element name="undeletable" nillable="true" type="xsd:string"/>
+     <element name="updateable" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="SForceOutputBean">
+    <sequence>
+     <element name="messages" nillable="true" type="impl:ArrayOf_tns1_SForceErrorBean"/>
+     <element name="objects" nillable="true" type="impl:ArrayOf_tns1_SForceObjectBean"/>
+     <element name="user" nillable="true" type="tns1:UserdataBean"/>
+    </sequence>
+   </complexType>
+   <complexType name="MetadataServiceOutputBean">
+    <sequence>
+     <element name="users" nillable="true" type="impl:ArrayOf_tns1_SForceOutputBean"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="readMetadataRequest">
+
+      <wsdl:part element="impl:readMetadata" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="readMetadataResponse">
+
+      <wsdl:part element="impl:readMetadataResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="MetadataWebService">
+
+      <wsdl:operation name="readMetadata">
+
+         <wsdl:input message="impl:readMetadataRequest" name="readMetadataRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:readMetadataResponse" name="readMetadataResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="MetadataWebServiceSoapBinding" type="impl:MetadataWebService">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="readMetadata">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="readMetadataRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="readMetadataResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="MetadataWebServiceService">
+
+      <wsdl:port binding="impl:MetadataWebServiceSoapBinding" name="MetadataWebService">
+
+         <wsdlsoap:address location="http://localhost:8080/metadata_v1.0/services/MetadataWebService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>
