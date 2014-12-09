@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.sforce.soap.enterprise.DescribeGlobalResult;
+import com.sforce.soap.enterprise.DescribeSObjectResult;
 import com.sforce.soap.enterprise.EnterpriseConnection;
 import com.sforce.ws.ConnectionException;
 
@@ -66,6 +67,31 @@ public final class SForceObjectInfoUtil {
 		if (!objectNames.contains(value)) {
 			objectNames.add(value);
 		}
+	}
+	
+	/**
+	 * get object description
+	 * @param connection {@link EnterpriseConnection}
+	 */
+	public static final DescribeSObjectResult getObjectDescription(EnterpriseConnection connection, String object) {
+		if (connection == null) {
+			return null;
+		}
+		
+		try {
+			
+			String[] objects = new String[1];
+			objects[0] = object;
+			
+			DescribeSObjectResult[] results = connection.describeSObjects(objects);
+			if (results != null && results.length > 0) {
+				return results[0];
+			}
+		} catch (ConnectionException e) {
+			return null;
+		}
+		
+		return null;
 	}
 	
 	/**

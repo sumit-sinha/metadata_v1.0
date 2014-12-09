@@ -1,8 +1,9 @@
 package com.crmantra.metadata.ui.webservice.entry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -13,11 +14,14 @@ import com.crmantra.metadata.fwk.utils.SForceObjectInfoUtil;
 import com.crmantra.metadata.ui.webservice.beans.MetadataServiceInputBean;
 import com.crmantra.metadata.ui.webservice.beans.MetadataServiceOutputBean;
 import com.crmantra.metadata.ui.webservice.beans.SForceErrorBean;
+import com.crmantra.metadata.ui.webservice.beans.SForceMapBean;
 import com.crmantra.metadata.ui.webservice.beans.SForceObjectBean;
+import com.crmantra.metadata.ui.webservice.beans.SForceObjectInputBean;
 import com.crmantra.metadata.ui.webservice.beans.SForceOutputBean;
 import com.crmantra.metadata.ui.webservice.beans.UserdataBean;
 import com.sforce.soap.enterprise.DescribeGlobalResult;
 import com.sforce.soap.enterprise.DescribeGlobalSObjectResult;
+import com.sforce.soap.enterprise.DescribeSObjectResult;
 import com.sforce.soap.enterprise.EnterpriseConnection;
 
 /**
@@ -26,7 +30,7 @@ import com.sforce.soap.enterprise.EnterpriseConnection;
  */
 @WebService
 public class MetadataWebService {
-	
+
 	/**
 	 * web service method to read meta data based on parameters
 	 * @param input
@@ -42,46 +46,51 @@ public class MetadataWebService {
 			
 			// set user to output
 			SForceOutputBean sforceOutput = new SForceOutputBean();
-			sforceOutput.setUser(userData);
 			
 			// login
 			DescribeGlobalResult results = null;
 			EnterpriseConnection connection = SForceLoginUtil.login(userData.getUsername(), userData.getPassword());
+			
 			if (connection != null) {
 				
-				List<SForceObjectBean> response = null;
+				List<SForceMapBean> response = null;
 				results = SForceObjectInfoUtil.getGlobalResult(connection);
-				Set<String> objects = SForceObjectInfoUtil.getSetFromArray(userData.getObjects());
+				
+				// process input
+				Map<String, SForceObjectInputBean> objects = null;
+				if (userData.getObjects() != null) {
+					String[] str = new String[userData.getObjects().length];
+					objects = new HashMap<String, SForceObjectInputBean>();
+					for (int j = 0; j < str.length; j++) {
+						objects.put(userData.getObjects()[i].getObject(), userData.getObjects()[i]);
+					}
+				}
+				
 				for (int j = 0; results != null && j < results.getSobjects().length; j++) {
 					DescribeGlobalSObjectResult result = results.getSobjects()[j];
-					if (result != null && (objects == null || objects.contains(result.getName()))) {
-						
-						// hold the value temporarily
-						// below line will ensure that if name of object is passed then SHOW_FULL_DESCRIPTION is always true
-						boolean tempShowDesc = input.isShowAllDescription();
-						if (objects != null && objects.contains(result.getName())) {
-							input.setShowAllDescription(true);
-						}
-						
+					if (result != null && (objects == null || objects.containsKey(result.getName()))) {
+
 						if (response == null) {
-							response = new ArrayList<SForceObjectBean>();
+							response = new ArrayList<SForceMapBean>();
 						}
 						
-						if (input.isShowAllDescription()) {
-							response.add(new SForceObjectBean(result));
+						DescribeSObjectResult objectResult = null;
+						if (objects != null && (objects.containsKey(result.getName()) && objects.get(result.getName()).isSendFullDescription())) {
+							objectResult = SForceObjectInfoUtil.getObjectDescription(connection, result.getName());
+						}
+						
+						if (input.isSendObjectInfo()) {
+							response.add(new SForceMapBean(new SForceObjectBean(result), objectResult));
 						} else {
-							response.add(new SForceObjectBean(result.getName()));
+							response.add(new SForceMapBean(new SForceObjectBean(result.getName()), objectResult));
 						}
-						
-						// reset the value
-						input.setShowAllDescription(tempShowDesc);
 					}
 				}
 				
 				// set the objects
 				if (response != null) {
 					
-					SForceObjectBean[] sForceArr = new SForceObjectBean[response.size()];
+					SForceMapBean[] sForceArr = new SForceMapBean[response.size()];
 					for (int j = 0; j < response.size(); j++) {
 						sForceArr[j] = response.get(j);
 					}
@@ -112,6 +121,7 @@ public class MetadataWebService {
 			}
 			
 			outputs[i] = sforceOutput;
+			sforceOutput.setUser(userData);
 			SForceLoginUtil.logout(connection);
 		}
 		

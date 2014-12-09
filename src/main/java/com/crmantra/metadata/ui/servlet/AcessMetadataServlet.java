@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.crmantra.metadata.fwk.constants.ISForceConstants;
 import com.crmantra.metadata.fwk.servlet.FwkServlet;
 import com.crmantra.metadata.ui.webservice.beans.MetadataServiceInputBean;
+import com.crmantra.metadata.ui.webservice.beans.SForceObjectInputBean;
 import com.crmantra.metadata.ui.webservice.beans.UserdataBean;
 import com.crmantra.metadata.ui.webservice.entry.MetadataWebService;
 /**
@@ -41,7 +42,7 @@ public class AcessMetadataServlet extends FwkServlet {
 		
 		// output array
 		MetadataServiceInputBean input = new MetadataServiceInputBean();
-		input.setShowAllDescription(Boolean.parseBoolean(req.getParameter(ISForceConstants.UI_PARAM_FULL_DESCRIPTION)));
+		input.setSendObjectInfo(Boolean.parseBoolean(req.getParameter(ISForceConstants.UI_PARAM_FULL_INFO)));
 
 		// read parameters from request
 		List<UserdataBean> users = null;
@@ -70,29 +71,40 @@ public class AcessMetadataServlet extends FwkServlet {
 			user.setPassword(password);
 			
 			// get all the object name from param
-			List<String> values = null;
+			List<SForceObjectInputBean> values = null;
 			for (int j = 1; j > 0; j++) {
+				
+				SForceObjectInputBean object = new SForceObjectInputBean();
+				
 				StringBuffer objectKey = new StringBuffer(ISForceConstants.UI_PARAM_OBJECTNAME);
 				objectKey.append("_");
 				objectKey.append(i);
 				objectKey.append("_");
 				objectKey.append(j);
 				
-				String value = req.getParameter(objectKey.toString());
-				if (value == null) {
+				object.setObject(req.getParameter(objectKey.toString()));
+				if (object.getObject() == null) {
 					break;
 				}
 				
+				StringBuffer objectDescKey = new StringBuffer(ISForceConstants.UI_PARAM_FULL_DESCRIPTION);
+				objectDescKey.append("_");
+				objectDescKey.append(i);
+				objectDescKey.append("_");
+				objectDescKey.append(j);
+				
+				object.setSendFullDescription(Boolean.parseBoolean(req.getParameter(objectDescKey.toString())));
+				
 				if (values == null) {
-					values = new ArrayList<String>();
+					values = new ArrayList<SForceObjectInputBean>();
 				}
 				
-				values.add(value);
+				values.add(object);
 			}
 			
 			if (values != null) {
 				// convert list to String array
-				String[] objects = new String[values.size()];
+				SForceObjectInputBean[] objects = new SForceObjectInputBean[values.size()];
 				for (int j = 0; j < values.size(); j++) {
 					objects[j] = values.get(j);
 				}

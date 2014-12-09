@@ -12,7 +12,7 @@ public class SForceOutputBean implements Serializable {
 	
 	private UserdataBean user;
 	
-	private SForceObjectBean[] objects;
+	private SForceMapBean[] objects;
 	
 	private SForceErrorBean[] messages;
 
@@ -21,14 +21,18 @@ public class SForceOutputBean implements Serializable {
 	}
 
 	public void setUser(UserdataBean user) {
-		this.user = user;
+		if (user != null) {
+			// hide password
+			this.user = user;
+			this.user.setPassword("***************");
+		}
 	}
 
-	public SForceObjectBean[] getObjects() {
+	public SForceMapBean[] getObjects() {
 		return objects;
 	}
 
-	public void setObjects(SForceObjectBean[] objects) {
+	public void setObjects(SForceMapBean[] objects) {
 		this.objects = objects;
 	}
 	

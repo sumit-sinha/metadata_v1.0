@@ -28,6 +28,11 @@ public interface ISForceConstants {
 	public String UI_PARAM_OBJECTNAME = "OBJECT_NAME";
 	
 	/**
+	 * constant which defines the parameter name for object info flag
+	 */
+	public String UI_PARAM_FULL_INFO = "FULL_OBJECT_INFO";
+	
+	/**
 	 * constant which defines the parameter name for object description flag
 	 */
 	public String UI_PARAM_FULL_DESCRIPTION = "FULL_OBJECT_DESCRIPTION";
@@ -71,4 +76,9 @@ public interface ISForceConstants {
 	 * error number 90004
 	 */
 	public String ERROR_NUMBER_90004 = "90004";
+	
+	/**
+	 * used to maintain object in session
+	 */
+	public String ENTP_CONNECTION = "ENTP_CONNECTION";
 }

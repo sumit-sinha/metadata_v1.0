@@ -12,7 +12,7 @@ public class MetadataServiceInputBean implements Serializable {
 	
 	private UserdataBean[] users;
 	
-	private boolean showAllDescription;
+	private boolean sendObjectInfo;
 
 	public UserdataBean[] getUsers() {
 		return users;
@@ -22,11 +22,11 @@ public class MetadataServiceInputBean implements Serializable {
 		this.users = users;
 	}
 
-	public boolean isShowAllDescription() {
-		return showAllDescription;
+	public boolean isSendObjectInfo() {
+		return sendObjectInfo;
 	}
 
-	public void setShowAllDescription(boolean showAllDescription) {
-		this.showAllDescription = showAllDescription;
+	public void setSendObjectInfo(boolean sendObjectInfo) {
+		this.sendObjectInfo = sendObjectInfo;
 	}
 }

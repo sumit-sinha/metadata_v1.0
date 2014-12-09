@@ -15,7 +15,7 @@ public class UserdataBean implements Serializable {
 	
 	private String password;
 	
-	private String[] objects;
+	private SForceObjectInputBean[] objects;
 
 	public String getUsername() {
 		return username;
@@ -33,11 +33,11 @@ public class UserdataBean implements Serializable {
 		this.password = password;
 	}
 
-	public String[] getObjects() {
+	public SForceObjectInputBean[] getObjects() {
 		return objects;
 	}
 
-	public void setObjects(String[] objects) {
+	public void setObjects(SForceObjectInputBean[] objects) {
 		this.objects = objects;
 	}	
 }

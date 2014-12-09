@@ -29,7 +29,7 @@
 			<groupId>com.sforce.soap.enterprise</groupId>
 			<artifactId>enterprise</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency>	
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
