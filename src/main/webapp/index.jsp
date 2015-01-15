@@ -17,7 +17,7 @@
 	</head>
 	<body>
 		
-		<div ng-app="metadata">
+		<div ng-app="metadata" class="parent">
 			<header-html></header-html>
 			<div ng-view></div>
 			<div class="msk loading hidden">&nbsp;</div>

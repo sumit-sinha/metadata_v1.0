@@ -1,15 +1,24 @@
 <div class="container">
-	<form class="form-signin" action="MetadataApi" method="POST">
+	<div class="alert alert-danger" ng-show="errors != null">
+		<button type="button" class="close" ng-click="dismissError()">
+			<span>&times;</span>
+		</button>
+		<ul class="error-container">
+			<li>Error Message:</li>
+			<li ng-repeat="error in errors" class="error">{{error.number}} - {{error.message}}</li>
+		</ul>
+	</div>
+	<form class="form-signin">
 		<h2 class="form-signin-heading">Please sign in</h2>
 		<label for="inputEmail" class="sr-only">Email address</label>
-		<input type="email" id="inputEmail" name="USER_NAME_1" class="form-control" placeholder="Email address" autofocus>
+		<input type="email" id="inputEmail" name="USER_NAME_1" class="form-control" placeholder="Email address" value="{{this.userName}}" autofocus>
 		<label for="inputPassword" class="sr-only">Password</label>
 		<input type="password" id="inputPassword"  name="USER_PASSWORD_1" class="form-control" placeholder="Password">
 		<div class="checkbox">
 			<label>
-				<input name="FULL_OBJECT_DESCRIPTION" id="chkDescription" type="checkbox" value="false" onclick="onCheckBoxClick()"> Show Full Description
+				<input id="chkRemember" type="checkbox" value="false"> Remember Me
 			</label>
 		</div>
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+		<button class="btn btn-lg btn-primary btn-block" type="button" ng-click="onFormSubmission()">Sign in</button>
 	</form>
 </div>

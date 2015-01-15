@@ -39,7 +39,7 @@ public class MetadataWebService {
 	public MetadataServiceOutputBean readMetadata(MetadataServiceInputBean input) {
 		
 		SForceOutputBean[] outputs = null;
-		for (int i = 0; i < input.getUsers().length; i++) {
+		for (int i = 0; input.getUsers() != null && i < input.getUsers().length; i++) {
 			
 			UserdataBean userData = input.getUsers()[i];
 			List<SForceErrorBean> errors = new ArrayList<SForceErrorBean>();
@@ -75,7 +75,9 @@ public class MetadataWebService {
 						}
 						
 						DescribeSObjectResult objectResult = null;
-						if (objects != null && (objects.containsKey(result.getName()) && objects.get(result.getName()).isSendFullDescription())) {
+						if (objects != null 
+								&& objects.containsKey(result.getName()) 
+								&& objects.get(result.getName()).isSendFullDescription()) {
 							objectResult = SForceObjectInfoUtil.getObjectDescription(connection, result.getName());
 						}
 						

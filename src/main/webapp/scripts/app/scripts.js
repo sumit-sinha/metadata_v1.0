@@ -31,7 +31,7 @@ var global_route = {
 				deps: function($q, $rootScope) {
 					var deferred = $q.defer();
 		            var dependencies = [
-		                'scripts/model/controller/objects/ObjectPageCtrl.js'
+		                'scripts/model/controller/ObjectPageCtrl.js'
 		            ];
 		 
 		            $script(dependencies, function() {
@@ -52,7 +52,7 @@ var global_route = {
  */
 function onLoad(requestData) {
 	
-	var app = angular.module(app_name, ['ngRoute', 'headerModule', 'ui.date']);
+	var app = angular.module(app_name, ['ngRoute', 'headerModule']);
 	
 	// for header UI
 	angular.module('headerModule', []).directive('headerHtml', function() {
@@ -73,10 +73,10 @@ function onLoad(requestData) {
 				            }
 				        }
 				    }
-				}
+				};
 			},
 			controllerAs: 'headerCtrl'
-		}
+		};
 	});
 	
 	/**
@@ -94,7 +94,7 @@ function onLoad(requestData) {
 	app.factory('$dataManager', function() {
 
 		var factory = {};
-		var data = requestData['data'];
+		var data = (typeof requestData != 'undefined')?requestData['data']: {};
 		
 		/**
 		 * returns business data stored in this factory
@@ -117,7 +117,7 @@ function onLoad(requestData) {
 			}
 			
 			return data.model[args.key];
-		}
+		};
 		
 		/**
 		 * returns localized label stored in this factory
@@ -133,7 +133,7 @@ function onLoad(requestData) {
 			}
 			
 			return data.labels;
-		}
+		};
 		
 		/**
 		 * returns parameter stored in this factory
@@ -149,7 +149,7 @@ function onLoad(requestData) {
 			}
 			
 			return data.config;
-		}
+		};
 
 		/**
 		 * set data to factory
@@ -197,7 +197,7 @@ function onLoad(requestData) {
 					}
 				}
 			}
-		}
+		};
 
 		return factory;
 	});
@@ -216,7 +216,7 @@ function onLoad(requestData) {
 		
 		$routeProvider.when('/index', global_route['index'])
 					  .when('/objects', global_route['objects'])
-					  .otherwise(global_route['index'])
+					  .otherwise(global_route['index']);
 	});
 	
 	/**
@@ -290,7 +290,7 @@ function onLoad(requestData) {
             	$scope.data.setData(data);
             	args['onSuccessCallback'](data);
             });
-		}
+		};
 	};
 	
 	app.controller('ApplicationCtrl', app.appCtrl);
@@ -302,9 +302,9 @@ function onLoad(requestData) {
  * @param definition
  */
 (function (name, definition) {
-  if (typeof module != 'undefined' && module.exports) module.exports = definition()
-  else if (typeof define == 'function' && define.amd) define(definition)
-  else this[name] = definition()
+  if (typeof module != 'undefined' && module.exports) module.exports = definition();
+  else if (typeof define == 'function' && define.amd) define(definition);
+  else this[name] = definition();
 })('$script', function () {
   var doc = document
     , head = doc.getElementsByTagName('head')[0]
@@ -318,99 +318,99 @@ function onLoad(requestData) {
     , delay = {}
     , scripts = {}
     , scriptpath
-    , urlArgs
+    , urlArgs;
 
   function every(ar, fn) {
-    for (var i = 0, j = ar.length; i < j; ++i) if (!fn(ar[i])) return f
-    return 1
+    for (var i = 0, j = ar.length; i < j; ++i) if (!fn(ar[i])) return f;
+    return 1;
   }
   function each(ar, fn) {
     every(ar, function (el) {
-      return !fn(el)
-    })
+      return !fn(el);
+    });
   }
 
   function $script(paths, idOrDone, optDone) {
-    paths = paths[push] ? paths : [paths]
+    paths = paths[push] ? paths : [paths];
     var idOrDoneIsDone = idOrDone && idOrDone.call
       , done = idOrDoneIsDone ? idOrDone : optDone
       , id = idOrDoneIsDone ? paths.join('') : idOrDone
-      , queue = paths.length
+      , queue = paths.length;
     function loopFn(item) {
-      return item.call ? item() : list[item]
+      return item.call ? item() : list[item];
     }
     function callback() {
       if (!--queue) {
-        list[id] = 1
-        done && done()
+        list[id] = 1;
+        done && done();
         for (var dset in delay) {
-          every(dset.split('|'), loopFn) && !each(delay[dset], loopFn) && (delay[dset] = [])
+          every(dset.split('|'), loopFn) && !each(delay[dset], loopFn) && (delay[dset] = []);
         }
       }
     }
     setTimeout(function () {
       each(paths, function loading(path, force) {
-        if (path === null) return callback()
-        path = !force && path.indexOf('.js') === -1 && !/^https?:\/\//.test(path) && scriptpath ? scriptpath + path + '.js' : path
+        if (path === null) return callback();
+        path = !force && path.indexOf('.js') === -1 && !/^https?:\/\//.test(path) && scriptpath ? scriptpath + path + '.js' : path;
         if (scripts[path]) {
-          if (id) ids[id] = 1
-          return (scripts[path] == 2) ? callback() : setTimeout(function () { loading(path, true) }, 0)
+          if (id) ids[id] = 1;
+          return (scripts[path] == 2) ? callback() : setTimeout(function () { loading(path, true); }, 0);
         }
 
-        scripts[path] = 1
-        if (id) ids[id] = 1
-        create(path, callback)
-      })
-    }, 0)
-    return $script
-  }
+        scripts[path] = 1;
+        if (id) ids[id] = 1;
+        create(path, callback);
+      });
+    }, 0);
+    return $script;
+  };
 
   function create(path, fn) {
-    var el = doc.createElement('script'), loaded
+    var el = doc.createElement('script'), loaded;
     el.onload = el.onerror = el[onreadystatechange] = function () {
       if ((el[readyState] && !(/^c|loade/.test(el[readyState]))) || loaded) return;
-      el.onload = el[onreadystatechange] = null
-      loaded = 1
-      scripts[path] = 2
-      fn()
-    }
-    el.async = 1
+      el.onload = el[onreadystatechange] = null;
+      loaded = 1;
+      scripts[path] = 2;
+      fn();
+    };
+    el.async = 1;
     el.src = urlArgs ? path + (path.indexOf('?') === -1 ? '?' : '&') + urlArgs : path;
-    head.insertBefore(el, head.lastChild)
-  }
+    head.insertBefore(el, head.lastChild);
+  };
 
-  $script.get = create
+  $script.get = create;
 
   $script.order = function (scripts, id, done) {
     (function callback(s) {
-      s = scripts.shift()
-      !scripts.length ? $script(s, id, done) : $script(s, callback)
-    }())
-  }
+      s = scripts.shift();
+      !scripts.length ? $script(s, id, done) : $script(s, callback);
+    }());
+  };
 
   $script.path = function (p) {
-    scriptpath = p
-  }
+    scriptpath = p;
+  };
   $script.urlArgs = function (str) {
     urlArgs = str;
-  }
+  };
   $script.ready = function (deps, ready, req) {
-    deps = deps[push] ? deps : [deps]
+    deps = deps[push] ? deps : [deps];
     var missing = [];
     !each(deps, function (dep) {
       list[dep] || missing[push](dep);
-    }) && every(deps, function (dep) {return list[dep]}) ?
+    }) && every(deps, function (dep) {return list[dep];}) ?
       ready() : !function (key) {
-      delay[key] = delay[key] || []
-      delay[key][push](ready)
-      req && req(missing)
-    }(deps.join('|'))
-    return $script
-  }
+      delay[key] = delay[key] || [];
+      delay[key][push](ready);
+      req && req(missing);
+    }(deps.join('|'));
+    return $script;
+  };
 
   $script.done = function (idOrDone) {
-    $script([null], idOrDone)
-  }
+    $script([null], idOrDone);
+  };
 
-  return $script
+  return $script;
 });
