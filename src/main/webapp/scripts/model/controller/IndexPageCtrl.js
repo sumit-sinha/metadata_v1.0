@@ -88,8 +88,15 @@ angular.module(app_name).controllerProvider.register('IndexPageCtrl', function($
 		
 		// don't navigate if errors are present
 		if ($scope.errors == null || $scope.errors.length == 0) {
+			
+			// set data
+			$scope.data.setData({
+				key: 'index',
+				value: data.users[0].objects
+			});
+			
 			$scope.navigate({
-				page: 'object'
+				page: 'objects'
 			});
 		}
 	};
