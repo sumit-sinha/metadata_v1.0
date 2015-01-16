@@ -12,9 +12,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
-   <complexType name="ArrayOf_xsd_string">
+   <complexType name="ArrayOf_tns1_SForceObjectInputBean">
     <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:SForceObjectInputBean"/>
     </sequence>
    </complexType>
    <complexType name="ArrayOf_tns1_UserdataBean">
@@ -34,9 +34,9 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:SForceErrorBean"/>
     </sequence>
    </complexType>
-   <complexType name="ArrayOf_tns1_SForceObjectBean">
+   <complexType name="ArrayOf_tns1_SForceMapBean">
     <sequence>
-     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:SForceObjectBean"/>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type=""/>
     </sequence>
    </complexType>
    <complexType name="ArrayOf_tns1_SForceOutputBean">
@@ -47,16 +47,22 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
   </schema>
   <schema elementFormDefault="qualified" targetNamespace="http://beans.webservice.ui.metadata.crmantra.com" xmlns="http://www.w3.org/2001/XMLSchema">
    <import namespace="http://entry.webservice.ui.metadata.crmantra.com"/>
+   <complexType name="SForceObjectInputBean">
+    <sequence>
+     <element name="object" nillable="true" type="xsd:string"/>
+     <element name="sendFullDescription" type="xsd:boolean"/>
+    </sequence>
+   </complexType>
    <complexType name="UserdataBean">
     <sequence>
-     <element name="objects" nillable="true" type="impl:ArrayOf_xsd_string"/>
+     <element name="objects" nillable="true" type="impl:ArrayOf_tns1_SForceObjectInputBean"/>
      <element name="password" nillable="true" type="xsd:string"/>
      <element name="username" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
    <complexType name="MetadataServiceInputBean">
     <sequence>
-     <element name="showAllDescription" type="xsd:boolean"/>
+     <element name="sendObjectInfo" type="xsd:boolean"/>
      <element name="users" nillable="true" type="impl:ArrayOf_tns1_UserdataBean"/>
     </sequence>
    </complexType>
@@ -68,33 +74,11 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      <element name="type" nillable="true" type="xsd:string"/>
     </sequence>
    </complexType>
-   <complexType name="SForceObjectBean">
-    <sequence>
-     <element name="activateable" nillable="true" type="xsd:string"/>
-     <element name="createable" nillable="true" type="xsd:string"/>
-     <element name="custom" nillable="true" type="xsd:string"/>
-     <element name="customSetting" nillable="true" type="xsd:string"/>
-     <element name="deletable" nillable="true" type="xsd:string"/>
-     <element name="deprecatedAndHidden" nillable="true" type="xsd:string"/>
-     <element name="feedEnabled" nillable="true" type="xsd:string"/>
-     <element name="label" nillable="true" type="xsd:string"/>
-     <element name="labelPlural" nillable="true" type="xsd:string"/>
-     <element name="layoutable" nillable="true" type="xsd:string"/>
-     <element name="mergeable" nillable="true" type="xsd:string"/>
-     <element name="name" nillable="true" type="xsd:string"/>
-     <element name="queryable" nillable="true" type="xsd:string"/>
-     <element name="replicateable" nillable="true" type="xsd:string"/>
-     <element name="retrieveable" nillable="true" type="xsd:string"/>
-     <element name="searchable" nillable="true" type="xsd:string"/>
-     <element name="triggerable" nillable="true" type="xsd:string"/>
-     <element name="undeletable" nillable="true" type="xsd:string"/>
-     <element name="updateable" nillable="true" type="xsd:string"/>
-    </sequence>
-   </complexType>
    <complexType name="SForceOutputBean">
     <sequence>
+     <element name="loggedId" type="xsd:boolean"/>
      <element name="messages" nillable="true" type="impl:ArrayOf_tns1_SForceErrorBean"/>
-     <element name="objects" nillable="true" type="impl:ArrayOf_tns1_SForceObjectBean"/>
+     <element name="objects" nillable="true" type="impl:ArrayOf_tns1_SForceMapBean"/>
      <element name="user" nillable="true" type="tns1:UserdataBean"/>
     </sequence>
    </complexType>
