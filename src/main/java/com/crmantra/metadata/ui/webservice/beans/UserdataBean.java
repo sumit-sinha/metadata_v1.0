@@ -25,7 +25,7 @@ public class UserdataBean implements Serializable {
 		this.username = username;
 	}
 
-	public String getPassword() {
+	public String fetchPassword() {
 		return password;
 	}
 
@@ -39,5 +39,27 @@ public class UserdataBean implements Serializable {
 
 	public void setObjects(SForceObjectInputBean[] objects) {
 		this.objects = objects;
-	}	
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof UserdataBean) {
+			UserdataBean usr = (UserdataBean)obj;
+			boolean matched = usr.getUsername().equalsIgnoreCase(this.getUsername()) 
+					&& usr.fetchPassword().equals(this.fetchPassword()) && ((usr.getObjects() != null && this.getObjects() != null && usr.getObjects().length == this.getObjects().length 
+					|| (usr.getObjects() == null && this.getObjects() == null)));
+			if (matched) {
+				for (int i = 0; this.getObjects() != null && i < this.getObjects().length; i++) {
+					if (!this.getObjects()[i].equals(usr.getObjects()[i])) {
+						return false;
+					}
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

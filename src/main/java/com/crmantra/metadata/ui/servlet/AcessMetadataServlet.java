@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.crmantra.metadata.fwk.constants.ISForceConstants;
 import com.crmantra.metadata.fwk.servlet.FwkServlet;
 import com.crmantra.metadata.ui.webservice.beans.MetadataServiceInputBean;
+import com.crmantra.metadata.ui.webservice.beans.MetadataServiceOutputBean;
 import com.crmantra.metadata.ui.webservice.beans.SForceObjectInputBean;
 import com.crmantra.metadata.ui.webservice.beans.UserdataBean;
 import com.crmantra.metadata.ui.webservice.entry.MetadataWebService;
@@ -43,23 +44,49 @@ public class AcessMetadataServlet extends FwkServlet {
 		// output array
 		MetadataServiceInputBean input = new MetadataServiceInputBean();
 		input.setSendObjectInfo(Boolean.parseBoolean(req.getParameter(ISForceConstants.UI_PARAM_FULL_INFO)));
-
+		
+		MetadataServiceInputBean storedInput = null;
+		if (req.getSession().getAttribute("input") instanceof MetadataServiceInputBean) {
+			storedInput = (MetadataServiceInputBean)req.getSession().getAttribute("input");
+		}
+		
+		MetadataServiceOutputBean output = null;	
+		if (req.getSession().getAttribute("output") instanceof MetadataServiceOutputBean) {
+			output = (MetadataServiceOutputBean)req.getSession().getAttribute("output");
+		}
+		
+		// get parameter from UI
+		boolean isLoggedIn = output != null 
+				&& input != null 
+				&& Boolean.parseBoolean(req.getParameter(ISForceConstants.IS_ALREADY_LOGGED_IN));
+		
 		// read parameters from request
 		List<UserdataBean> users = null;
 		for (int i = 1; i > 0; i++) {
 			
-			// to store the data
+			String username = null;
+			String password = null;
 			
-			StringBuffer userNameKey = new StringBuffer(ISForceConstants.UI_PARAM_USERNAME);
-			userNameKey.append("_");
-			userNameKey.append(i);
+			if (!isLoggedIn) {
 			
-			StringBuffer userPwdKey = new StringBuffer(ISForceConstants.UI_PARAM_USERPASSWORD);
-			userPwdKey.append("_");
-			userPwdKey.append(i);
-			
-			String username = req.getParameter(userNameKey.toString());
-			String password = req.getParameter(userPwdKey.toString());
+				// to store the data
+				StringBuffer userNameKey = new StringBuffer(ISForceConstants.UI_PARAM_USERNAME);
+				userNameKey.append("_");
+				userNameKey.append(i);
+				
+				StringBuffer userPwdKey = new StringBuffer(ISForceConstants.UI_PARAM_USERPASSWORD);
+				userPwdKey.append("_");
+				userPwdKey.append(i);
+				
+				username = req.getParameter(userNameKey.toString());
+				password = req.getParameter(userPwdKey.toString());
+			} else {
+				if (storedInput.getUsers().length > (i - 1) 
+						&& storedInput.getUsers()[i-1] != null) {
+					username = storedInput.getUsers()[i-1].getUsername();
+					password = storedInput.getUsers()[i-1].fetchPassword();
+				}
+			}
 			
 			// exit loop if username or password is not present
 			if (username == null || password == null) {
@@ -128,7 +155,26 @@ public class AcessMetadataServlet extends FwkServlet {
 			input.setUsers(userArr);
 		}
 		
-		// read data from service and write to response stream
-		this.writeToOutputStream(resp, (new JSONObject((new MetadataWebService()).readMetadata(input))).toString());
+		if (storedInput == null || !storedInput.equals(input) || output == null) {
+
+			// read data from service and write to response stream
+			output = (new MetadataWebService()).readMetadata(input);
+			if (output.getUsers() != null && output.getUsers().length > 0) {
+				boolean allLoggedIn = true;
+				for (int i = 0; i < output.getUsers().length; i++) {
+					if (!output.getUsers()[i].isLoggedId()) {
+						allLoggedIn = false;
+						break;
+					}
+				}
+				
+				if (allLoggedIn) {
+					req.getSession().setAttribute("input", input);
+					req.getSession().setAttribute("output", output);
+				}
+			}
+		}
+		
+		this.writeToOutputStream(resp, (new JSONObject(output)).toString());
 	}
 }

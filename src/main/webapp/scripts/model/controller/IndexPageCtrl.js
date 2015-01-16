@@ -99,6 +99,8 @@ angular.module(app_name).controllerProvider.register('IndexPageCtrl', function($
 				page: 'objects'
 			});
 		}
+		
+		$scope.hideOverlay();
 	};
 	
 	$scope.init();

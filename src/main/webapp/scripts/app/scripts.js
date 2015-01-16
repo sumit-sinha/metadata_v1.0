@@ -102,7 +102,7 @@ function onLoad(requestData) {
 		 * 			key: String name of view
 		 * @return JSON
 		 */
-		factory.getModel = function(args) {
+		factory.getData = function(args) {
 
 			if (args == null || args.key == null) {
 				return null;
@@ -112,43 +112,7 @@ function onLoad(requestData) {
 				data = {};
 			}
 
-			if (data.model == null) {
-				data.model = {};
-			}
-
-			return data.model[args.key];
-		};
-
-		/**
-		 * returns localized label stored in this factory
-		 * @return JSON
-		 */
-		factory.getLabel = function() {
-			if (data == null) {
-				data = {};
-			}
-
-			if (data.labels == null) {
-				data.labels = {};
-			}
-
-			return data.labels;
-		};
-
-		/**
-		 * returns parameter stored in this factory
-		 * @return JSON
-		 */
-		factory.getConfig = function() {
-			if (data == null) {
-				data = {};
-			}
-
-			if (data.config == null) {
-				data.config = {};
-			}
-
-			return data.config;
+			return data[args.key];
 		};
 
 		/**
@@ -229,7 +193,34 @@ function onLoad(requestData) {
 
 			return false;
 		};
+		
+		/**
+		 * function to display overlay
+		 * @param args JSON object
+		 */
+		$scope.showOverlay = function(args) {
+			
+			var overlayEl = document.getElementsByClassName('msk');
+			for (var i = 0; overlayEl != null && i < overlayEl.length; i++) {
+				overlayEl[i].className = 'msk';
+				
+				if (args != null && args.loading === true) {
+					overlayEl[i].className += ' loading';
+				}
+			}
+		};
 
+		/**
+		 * function to display overlay
+		 * @param args JSON object
+		 */
+		$scope.hideOverlay = function(args) {
+			var overlayEl = document.getElementsByClassName('msk');
+			for (var i = 0; overlayEl != null && i < overlayEl.length; i++) {
+				overlayEl[i].className = 'msk hidden';
+			}
+		};
+		
 		/**
 		 * method used to make a server call
 		 * @param args: JSON object
@@ -244,9 +235,13 @@ function onLoad(requestData) {
 				for (var key in args.data) {
 					if (args.data.hasOwnProperty(key)) {
 						data += ((data != null && data.length != 0) ? '&' : '') + key + '=' + args.data[key];
-					}
-				}
+					};
+				};
 			}
+			
+			$scope.showOverlay({
+				loading: true
+			});
 
 			$http({
 				method: "post",
@@ -317,8 +312,8 @@ function onLoad(requestData) {
 				done && done();
 				for (var dset in delay) {
 					every(dset.split('|'), loopFn) && !each(delay[dset], loopFn) && (delay[dset] = []);
-				}
-			}
+				};
+			};
 		}
 		setTimeout(function() {
 			each(paths, function loading(path, force) {

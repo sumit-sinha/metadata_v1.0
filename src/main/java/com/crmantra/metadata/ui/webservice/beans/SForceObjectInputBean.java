@@ -25,4 +25,16 @@ public class SForceObjectInputBean implements Serializable {
 	public void setSendFullDescription(boolean sendFullDescription) {
 		this.sendFullDescription = sendFullDescription;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj instanceof SForceObjectInputBean) {
+			SForceObjectInputBean bean = (SForceObjectInputBean)obj;
+			return bean.getObject().equalsIgnoreCase(this.getObject()) 
+					&& bean.isSendFullDescription() == this.isSendFullDescription();
+		}
+		
+		return false;
+	}
 }

@@ -12,10 +12,18 @@ public class SForceOutputBean implements Serializable {
 	
 	private UserdataBean user;
 	
+	private boolean loggedId;
+
 	private SForceMapBean[] objects;
 	
 	private SForceErrorBean[] messages;
-
+	
+	public SForceOutputBean() {
+		this.loggedId = false;
+		this.objects = null;
+		this.messages = null;
+	}
+	
 	public UserdataBean getUser() {
 		return user;
 	}
@@ -24,7 +32,6 @@ public class SForceOutputBean implements Serializable {
 		if (user != null) {
 			// hide password
 			this.user = user;
-			this.user.setPassword("***************");
 		}
 	}
 
@@ -42,5 +49,13 @@ public class SForceOutputBean implements Serializable {
 
 	public void setMessages(SForceErrorBean[] messages) {
 		this.messages = messages;
+	}
+	
+	public boolean isLoggedId() {
+		return loggedId;
+	}
+
+	public void setLoggedId(boolean loggedId) {
+		this.loggedId = loggedId;
 	}
 }

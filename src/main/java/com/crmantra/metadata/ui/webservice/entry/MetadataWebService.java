@@ -49,7 +49,7 @@ public class MetadataWebService {
 			
 			// login
 			DescribeGlobalResult results = null;
-			EnterpriseConnection connection = SForceLoginUtil.login(userData.getUsername(), userData.getPassword());
+			EnterpriseConnection connection = SForceLoginUtil.login(userData.getUsername(), userData.fetchPassword());
 			
 			if (connection != null) {
 				
@@ -97,7 +97,9 @@ public class MetadataWebService {
 						sForceArr[j] = response.get(j);
 					}
 					
+					sforceOutput.setLoggedId(true);
 					sforceOutput.setObjects(sForceArr);
+
 				} else {
 					SForceErrorBean error = new SForceErrorBean();
 					error.setNumber(ISForceConstants.ERROR_NUMBER_90002);

@@ -13,6 +13,11 @@ public interface ISForceConstants {
 	public String AUTHORIZATION_URL = "https://login.salesforce.com/services/Soap/c/32.0/";
 	
 	/**
+	 * constant which defines the parameter name logged in flag
+	 */
+	public String IS_ALREADY_LOGGED_IN = "LOGGED_IN";
+	
+	/**
 	 * constant which defines the parameter name for username field
 	 */
 	public String UI_PARAM_USERNAME = "USER_NAME";
